@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Hotel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Grand Hotel</div>
+            <button class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#rooms">Rooms & Suites</a></li>
+                <li><a href="#amenities">Amenities</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#dining">Dining</a></li>
+                <li><a href="booking.html">Book Now</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <h1>Welcome to Grand Hotel</h1>
+            <p>Experience luxury and comfort like never before</p>
+            <a href="booking.html" class="cta-button">Book Your Stay</a>
+        </section>
+
+        <section id="rooms" class="section">
+            <div class="section-title">
+                <h2>Our Rooms & Suites</h2>
+                <p>Choose from our luxurious accommodations</p>
+            </div>
+            <div class="rooms-grid">
+                <div class="room-card">
+                    <img src="assets/image1.png" alt="Deluxe Room">
+                    <h3>Deluxe Room</h3>
+                    <p>Spacious and comfortable room with modern amenities</p>
+                    <ul class="room-features">
+                        <li><i class="fas fa-bed"></i> King Size Bed</li>
+                        <li><i class="fas fa-wifi"></i> Free Wi-Fi</li>
+                        <li><i class="fas fa-tv"></i> Smart TV</li>
+                        <li><i class="fas fa-coffee"></i> Coffee Maker</li>
+                    </ul>
+                    <a href="booking.html?room=deluxe" class="room-button">Book Now</a>
+                </div>
+                <div class="room-card">
+                    <img src="assets/image2.png" alt="Executive Suite">
+                    <h3>Executive Suite</h3>
+                    <p>Luxury suite with separate living area</p>
+                    <ul class="room-features">
+                        <li><i class="fas fa-bed"></i> King Size Bed</li>
+                        <li><i class="fas fa-couch"></i> Living Room</li>
+                        <li><i class="fas fa-bath"></i> Jacuzzi</li>
+                        <li><i class="fas fa-concierge-bell"></i> Butler Service</li>
+                    </ul>
+                    <a href="booking.html?room=executive" class="room-button">Book Now</a>
+                </div>
+                <div class="room-card">
+                    <img src="assets/image3.png" alt="Presidential Suite">
+                    <h3>Presidential Suite</h3>
+                    <p>Ultimate luxury with panoramic views</p>
+                    <ul class="room-features">
+                        <li><i class="fas fa-bed"></i> Master Bedroom</li>
+                        <li><i class="fas fa-swimming-pool"></i> Private Pool</li>
+                        <li><i class="fas fa-glass-martini-alt"></i> Mini Bar</li>
+                        <li><i class="fas fa-user-tie"></i> Personal Butler</li>
+                    </ul>
+                    <a href="booking.html?room=presidential" class="room-button">Book Now</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="amenities" class="section">
+            <div class="section-title">
+                <h2>Hotel Amenities</h2>
+                <p>Discover our world-class facilities</p>
+            </div>
+            <div class="amenities-grid">
+                <div class="amenity-card">
+                    <i class="fas fa-swimming-pool"></i>
+                    <h3>Swimming Pool</h3>
+                    <p>Outdoor infinity pool with city views</p>
+                </div>
+                <div class="amenity-card">
+                    <i class="fas fa-spa"></i>
+                    <h3>Luxury Spa</h3>
+                    <p>Rejuvenating treatments and massages</p>
+                </div>
+                <div class="amenity-card">
+                    <i class="fas fa-dumbbell"></i>
+                    <h3>Fitness Center</h3>
+                    <p>State-of-the-art equipment</p>
+                </div>
+                <div class="amenity-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Fine Dining</h3>
+                    <p>Multiple restaurants and bars</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="section">
+            <div class="section-title">
+                <h2>Gallery</h2>
+                <p>Take a visual tour of our hotel</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="assets/pexels-pixabay-63324.jpg" alt="Hotel Exterior">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/pexels-valeriya-1484514.jpg" alt="Luxury Room">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/kitchen-6878026.jpg" alt="Restaurant">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/dinning.png" alt="Dining Area">
+                </div>
+            </div>
+        </section>
+
+        <section id="dining" class="section">
+            <div class="section-title">
+                <h2>Dining Experience</h2>
+                <p>Savor the finest cuisines</p>
+            </div>
+            <div class="dining-grid">
+                <div class="dining-card">
+                    <img src="assets/dinning.png" alt="Fine Dining Restaurant">
+                    <h3>The Grand Restaurant</h3>
+                    <p>International cuisine with a modern twist</p>
+                </div>
+                <div class="dining-card">
+                    <img src="assets/kitchen-6878026.jpg" alt="Rooftop Bar">
+                    <h3>Sky Lounge</h3>
+                    <p>Cocktails and tapas with panoramic views</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with us</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Luxury Avenue, City, Country</p>
+                    <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                    <p><i class="fas fa-envelope"></i> info@grandhotel.com</p>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <textarea placeholder="Your Message" required></textarea>
+                        <button type="submit" class="cta-button">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Grand Hotel</h3>
+                <p>Your luxury destination</p>
+
+                <div class="social-links">
+                            
+                    <a href="https://www.facebook.com/Daniel Dzansi" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                
+    
+                    <a href="https://www.instagram.com/dzansi.daniel" target="_blank" class="social-icon">
+                        <i class="fab fa-instagram"></i> 
+                    </a>
+                
+                    
+                    <a href="https://twitter.com/Daniel Dzansi" target="_blank" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/+233552973197" target="_blank" class="social-icon">
+                        <i class="fab fa-whatsapp"></i> <!-- WhatsApp icon -->
+                    </a>
+
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#rooms">Rooms</a></li>
+                    <li><a href="#amenities">Amenities</a></li>
+                    <li><a href="#dining">Dining</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-envelope"></i> info@grandhotel.com</p>
+                <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Luxury Avenue</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

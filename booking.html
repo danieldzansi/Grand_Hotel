@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Hotel - Luxury 5-Star Experience</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="styles/booking.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Grand Hotel</div>
+            <ul>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#rooms">Rooms & Suites</a></li>
+                <li><a href="index.html#amenities">Amenities</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#dining">Dining</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div id="bookingModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <section id="booking" class="booking-form">
+                    <h2>Make a Reservation</h2>
+                    <form id="reservationForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" required placeholder="Enter your full name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" required placeholder="Enter your email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required placeholder="Enter your phone number">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="checkIn">Check-in Date</label>
+                                <input type="date" id="checkIn" required>
+                            </div>
+                            <div class="form-group half">
+                                <label for="checkOut">Check-out Date</label>
+                                <input type="date" id="checkOut" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="adults">Adults</label>
+                                <select id="adults" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <div class="form-group half">
+                                <label for="children">Children</label>
+                                <select id="children">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="roomType">Room Type</label>
+                            <select id="roomType" required>
+                                <option value="">Select Room Type</option>
+                                <option value="deluxe">Deluxe Room - $300/night</option>
+                                <option value="executive">Executive Suite - $500/night</option>
+                                <option value="presidential">Presidential Suite - $1000/night</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="preferences">Room Preferences</label>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" name="preferences" value="high-floor"> High Floor
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="preferences" value="quiet-room"> Quiet Room
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="preferences" value="smoking"> Smoking Room
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="addons">Additional Services</label>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" name="addons" value="airport-pickup"> Airport Pickup ($50)
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="addons" value="breakfast"> Breakfast Package ($30/day)
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="addons" value="spa"> Spa Package ($100)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="special-requests">Special Requests</label>
+                            <textarea id="special-requests" rows="4" placeholder="Any special requests or requirements?"></textarea>
+                        </div>
+
+                        <div class="price-summary" id="priceSummary">
+                            <h3>Price Summary</h3>
+                            <div class="price-details">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-button">
+                            <span>Confirm Reservation</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <!-- ... existing footer content ... -->
+    </footer>
+</body>
+</html>

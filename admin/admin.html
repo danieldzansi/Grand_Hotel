@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Hotel - Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #d89400;
+        }
+
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .bookings-table th,
+        .bookings-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .bookings-table th {
+            background-color: #f0a500;
+            color: white;
+        }
+
+        .bookings-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .status-pending {
+            color: #ff9800;
+        }
+
+        .status-confirmed {
+            color: #4caf50;
+        }
+
+        .status-cancelled {
+            color: #f44336;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .confirm-button {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .cancel-button {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .security-message {
+            text-align: center;
+            color: #666;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .login-attempts {
+            color: #f44336;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .notification-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4caf50;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+    <script>
+        // EmailJS Configuration
+        const EMAILJS_CONFIG = {
+            serviceID: 'service_3z07oze',
+            templateID: 'template_mah770u',
+            publicKey: 'IxwVtznVnMlRVyb3X'
+        };
+
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+
+        // Test EmailJS connection
+        async function testEmailConnection() {
+            try {
+                console.log('Attempting to send test email...');
+                const templateParams = {
+                    title: 'Booking confirmation',
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    time: new Date().toLocaleString(),
+                    message: 'This is a test message'
+                };
+                
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.serviceID,
+                    EMAILJS_CONFIG.templateID,
+                    templateParams
+                );
+                console.log('Test email sent successfully:', response);
+                return true;
+            } catch (error) {
+                console.error('Test email failed:', error);
+                return false;
+            }
+        }
+
+        // Initialize Supabase client
+        const { createClient } = supabase;
+        const supabaseClient = createClient(
+            'https://caevromriepgcvswpxxs.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhZXZyb21yaWVwZ2N2c3dweHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODYwMjEsImV4cCI6MjA2MTQ2MjAyMX0.OmnPwkSrv0UTjgwcZIbiamdVcw76tfh2uGh11O-6AhQ'
+        );
+
+        // Admin credentials (in a real app, this would be handled server-side)
+        const ADMIN_EMAIL = "admin@grandhotel.com";
+        const ADMIN_PASSWORD = "admin123";
+        
+        // Security measures
+        let loginAttempts = 0;
+        const MAX_LOGIN_ATTEMPTS = 3;
+        let lockoutTime = null;
+        const LOCKOUT_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+        document.addEventListener('DOMContentLoaded', function() {
+            testEmailConnection();
+            const loginForm = document.getElementById('adminLoginForm');
+            const loginSection = document.getElementById('loginSection');
+            const dashboardSection = document.getElementById('dashboardSection');
+            const logoutButton = document.getElementById('logoutButton');
+            const bookingsTableBody = document.getElementById('bookingsTableBody');
+            const loginAttemptsDisplay = document.getElementById('loginAttempts');
+
+            // Check if admin is already logged in
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                showDashboard();
+                loadBookings();
+            }
+
+            // Handle login form submission
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Check if account is locked
+                if (lockoutTime && Date.now() < lockoutTime) {
+                    const remainingTime = Math.ceil((lockoutTime - Date.now()) / 1000 / 60);
+                    loginAttemptsDisplay.textContent = `Account locked. Please try again in ${remainingTime} minutes.`;
+                    return;
+                }
+
+                const email = document.getElementById('adminEmail').value;
+                const password = document.getElementById('adminPassword').value;
+
+                if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+                    // Reset login attempts on successful login
+                    loginAttempts = 0;
+                    loginAttemptsDisplay.textContent = '';
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    showDashboard();
+                    loadBookings();
+                } else {
+                    loginAttempts++;
+                    const remainingAttempts = MAX_LOGIN_ATTEMPTS - loginAttempts;
+                    
+                    if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+                        lockoutTime = Date.now() + LOCKOUT_DURATION;
+                        loginAttemptsDisplay.textContent = 'Too many failed attempts. Account locked for 5 minutes.';
+                    } else {
+                        loginAttemptsDisplay.textContent = `Invalid credentials. ${remainingAttempts} attempts remaining.`;
+                    }
+                }
+            });
+
+            // Handle logout
+            logoutButton.addEventListener('click', function() {
+                localStorage.removeItem('adminLoggedIn');
+                showLogin();
+            });
+
+            // Show dashboard and hide login
+            function showDashboard() {
+                loginSection.style.display = 'none';
+                dashboardSection.style.display = 'block';
+            }
+
+            // Show login and hide dashboard
+            function showLogin() {
+                loginSection.style.display = 'block';
+                dashboardSection.style.display = 'none';
+            }
+
+            // Load bookings from Supabase
+            async function loadBookings() {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('reservations')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+
+                    bookingsTableBody.innerHTML = '';
+                    data.forEach(booking => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${booking.name}</td>
+                            <td>${booking.email}</td>
+                            <td>${booking.phone}</td>
+                            <td>${booking.room_type}</td>
+                            <td>${new Date(booking.check_in).toLocaleDateString()}</td>
+                            <td>${new Date(booking.check_out).toLocaleDateString()}</td>
+                            <td class="status-${booking.status}">${booking.status}</td>
+                            <td class="action-buttons">
+                                <button class="action-button confirm-button" onclick="updateBookingStatus('${booking.id}', 'confirmed')">Confirm</button>
+                                <button class="action-button cancel-button" onclick="updateBookingStatus('${booking.id}', 'cancelled')">Cancel</button>
+                            </td>
+                        `;
+                        bookingsTableBody.appendChild(row);
+                    });
+                } catch (error) {
+                    console.error('Error loading bookings:', error);
+                    alert('Error loading bookings. Please try again.');
+                }
+            }
+
+            // Update booking status with email notification
+            window.updateBookingStatus = async function(bookingId, newStatus) {
+                try {
+                    // First, get the booking details
+                    const { data: booking, error: fetchError } = await supabaseClient
+                        .from('reservations')
+                        .select('*')
+                        .eq('id', bookingId)
+                        .single();
+
+                    if (fetchError) throw fetchError;
+
+                    // Update the booking status
+                    const { error: updateError } = await supabaseClient
+                        .from('reservations')
+                        .update({ status: newStatus })
+                        .eq('id', bookingId);
+
+                    if (updateError) throw updateError;
+
+                    // If the booking is being confirmed, send email notification
+                    if (newStatus === 'confirmed') {
+                        const templateParams = {
+                            title: 'Booking confirmation',
+                            name: booking.name,
+                            email: booking.email,
+                            time: new Date().toLocaleString(),
+                            message: `Your booking details:
+                                Room Type: ${booking.room_type}
+                                Check-in: ${new Date(booking.check_in).toLocaleDateString()}
+                                Check-out: ${new Date(booking.check_out).toLocaleDateString()}
+                                Number of Adults: ${booking.adults}
+                                Number of Children: ${booking.children || 0}
+                                
+                                Your booking at Grand Hotel has been confirmed! We look forward to welcoming you.`
+                        };
+
+                        console.log('Sending email with parameters:', templateParams);
+
+                        try {
+                            // Send email using EmailJS
+                            const response = await emailjs.send(
+                                EMAILJS_CONFIG.serviceID,
+                                EMAILJS_CONFIG.templateID,
+                                templateParams
+                            );
+
+                            console.log('Email sent successfully:', response);
+
+                            // Store email notification record
+                            const { error: notificationError } = await supabaseClient
+                                .from('email_notifications')
+                                .insert([{
+                                    recipient: booking.email,
+                                    subject: 'Booking Confirmation',
+                                    content: JSON.stringify(templateParams),
+                                    status: 'sent',
+                                    sent_at: new Date().toISOString()
+                                }]);
+
+                            if (notificationError) {
+                                console.error('Error storing notification:', notificationError);
+                                throw notificationError;
+                            }
+
+                            // Show success notification
+                            const notification = document.getElementById('notification');
+                            notification.style.display = 'block';
+                            setTimeout(() => {
+                                notification.style.display = 'none';
+                            }, 3000);
+                        } catch (emailError) {
+                            console.error('Detailed email error:', emailError);
+                            throw new Error(`Failed to send email: ${emailError.text || emailError.message}`);
+                        }
+                    }
+
+                    loadBookings(); // Refresh the bookings table
+                } catch (error) {
+                    console.error('Full error details:', error);
+                    alert(`Error: ${error.message || 'Failed to update booking or send email'}. Please try again.`);
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+    <div id="loginSection" class="login-form">
+        <h2>Admin Login</h2>
+        <form id="adminLoginForm">
+            <div class="form-group">
+                <label for="adminEmail">Email</label>
+                <input type="email" id="adminEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="adminPassword">Password</label>
+                <input type="password" id="adminPassword" required>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+            <div class="security-message">
+                <i class="fas fa-lock"></i> Secure Admin Access
+            </div>
+            <div id="loginAttempts" class="login-attempts"></div>
+        </form>
+    </div>
+
+    <div id="dashboardSection" class="admin-container" style="display: none;">
+        <button id="logoutButton" class="logout-button">Logout</button>
+        <h1>Admin Dashboard</h1>
+        <table class="bookings-table">
+            <thead>
+                <tr>
+                    <th>Guest Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Room Type</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+                <!-- Bookings will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="notification" class="notification-success">
+        <i class="fas fa-check-circle"></i> Booking confirmed and notification sent!
+    </div>
+</body>
+</html> 
